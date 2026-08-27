@@ -30,12 +30,16 @@ services:
         value: "3.0"
       - key: MAX_DELAY_SECONDS
         value: "9.0"
+      - key: MAX_PAGINATION_REQUESTS
+        value: "8"
       - key: CACHE_ENABLED
         value: "true"    # on for the public demo; see README
+      # Retention is a privacy decision: this holds the profile of everyone
+      # looked up through the service. 1h fresh, 24h fallback, then deleted.
       - key: CACHE_TTL_SECONDS
-        value: "86400"
+        value: "3600"
       - key: CACHE_STALE_MAX_SECONDS
-        value: "2592000"
+        value: "86400"
       - key: CACHE_PATH
         value: "/app/data/cache.sqlite3"
       - key: LOG_LEVEL
