@@ -1,7 +1,7 @@
 # Render blueprint. Push to GitHub, then New > Blueprint and point it here.
 #
-# Set LI_AT and JSESSIONID in the Render dashboard (Environment > Secret), never
-# in this file -- it is committed.
+# Set LINKEDIN_COOKIE in the Render dashboard (Environment > Secret), never in
+# this file -- it is committed.
 services:
   - type: web
     name: linkedin-profile-api
@@ -11,10 +11,11 @@ services:
     healthCheckPath: /health
     autoDeploy: true
     envVars:
-      - key: LI_AT
+      # The whole `cookie:` header from a real browser request. Not just li_at:
+      # LinkedIn expires the session when a member token arrives without
+      # bcookie/bscookie, its device-identity cookies. See the README.
+      - key: LINKEDIN_COOKIE
         sync: false          # prompts in the dashboard; never stored in git
-      - key: JSESSIONID
-        sync: false
       - key: API_KEYS
         sync: false
       - key: REQUIRE_API_KEY
