@@ -1,0 +1,734 @@
+{
+  "public_identifier": "priya-raghavan-synthetic",
+  "strategy": "profile_view",
+  "_note": "SYNTHETIC test data. Not a real person. Hand-built to mirror the shape of a real profileView response (normalized {data, included} with `*` URN references) so the resolver and parsers can be tested and demoed without contacting LinkedIn.",
+  "payload": {
+    "data": {
+      "$type": "com.linkedin.voyager.identity.profile.ProfileView",
+      "*profile": "urn:li:fs_profile:ACoAAASYNTH01",
+      "*positionView": "urn:li:fs_positionView:urn:li:fs_profile:ACoAAASYNTH01",
+      "*educationView": "urn:li:fs_educationView:urn:li:fs_profile:ACoAAASYNTH01",
+      "*skillView": "urn:li:fs_skillView:urn:li:fs_profile:ACoAAASYNTH01",
+      "*certificationView": "urn:li:fs_certificationView:urn:li:fs_profile:ACoAAASYNTH01",
+      "*languageView": "urn:li:fs_languageView:urn:li:fs_profile:ACoAAASYNTH01",
+      "*projectView": "urn:li:fs_projectView:urn:li:fs_profile:ACoAAASYNTH01",
+      "*honorView": "urn:li:fs_honorView:urn:li:fs_profile:ACoAAASYNTH01",
+      "*courseView": "urn:li:fs_courseView:urn:li:fs_profile:ACoAAASYNTH01",
+      "*volunteerExperienceView": "urn:li:fs_volunteerExperienceView:urn:li:fs_profile:ACoAAASYNTH01",
+      "*publicationView": "urn:li:fs_publicationView:urn:li:fs_profile:ACoAAASYNTH01",
+      "*testScoreView": "urn:li:fs_testScoreView:urn:li:fs_profile:ACoAAASYNTH01",
+      "*organizationView": "urn:li:fs_organizationView:urn:li:fs_profile:ACoAAASYNTH01",
+      "*profileNetworkInfo": "urn:li:fs_profileNetworkInfo:urn:li:fs_profile:ACoAAASYNTH01",
+      "primaryLocale": {
+        "country": "IN",
+        "language": "en"
+      }
+    },
+    "included": [
+      {
+        "entityUrn": "urn:li:fs_miniCompany:1001",
+        "$type": "com.linkedin.voyager.entities.shared.MiniCompany",
+        "name": "Northwind Analytics",
+        "universalName": "northwind-analytics",
+        "objectUrn": "urn:li:company:1001",
+        "logo": {
+          "com.linkedin.common.VectorImage": {
+            "rootUrl": "https://media.licdn.com/dms/image/C/",
+            "artifacts": [
+              {
+                "width": 200,
+                "height": 200,
+                "fileIdentifyingUrlPathSegment": "200_200/northwind-analytics.png",
+                "expiresAt": 1800000000000
+              },
+              {
+                "width": 400,
+                "height": 400,
+                "fileIdentifyingUrlPathSegment": "400_400/northwind-analytics.png",
+                "expiresAt": 1800000000000
+              }
+            ]
+          }
+        }
+      },
+      {
+        "entityUrn": "urn:li:fs_miniCompany:1002",
+        "$type": "com.linkedin.voyager.entities.shared.MiniCompany",
+        "name": "Helios Robotics",
+        "universalName": "helios-robotics",
+        "objectUrn": "urn:li:company:1002",
+        "logo": {
+          "com.linkedin.common.VectorImage": {
+            "rootUrl": "https://media.licdn.com/dms/image/C/",
+            "artifacts": [
+              {
+                "width": 200,
+                "height": 200,
+                "fileIdentifyingUrlPathSegment": "200_200/helios-robotics.png",
+                "expiresAt": 1800000000000
+              },
+              {
+                "width": 400,
+                "height": 400,
+                "fileIdentifyingUrlPathSegment": "400_400/helios-robotics.png",
+                "expiresAt": 1800000000000
+              }
+            ]
+          }
+        }
+      },
+      {
+        "entityUrn": "urn:li:fs_miniCompany:1003",
+        "$type": "com.linkedin.voyager.entities.shared.MiniCompany",
+        "name": "Kestrel Systems",
+        "universalName": "kestrel-systems",
+        "objectUrn": "urn:li:company:1003",
+        "logo": {
+          "com.linkedin.common.VectorImage": {
+            "rootUrl": "https://media.licdn.com/dms/image/C/",
+            "artifacts": [
+              {
+                "width": 200,
+                "height": 200,
+                "fileIdentifyingUrlPathSegment": "200_200/kestrel-systems.png",
+                "expiresAt": 1800000000000
+              },
+              {
+                "width": 400,
+                "height": 400,
+                "fileIdentifyingUrlPathSegment": "400_400/kestrel-systems.png",
+                "expiresAt": 1800000000000
+              }
+            ]
+          }
+        }
+      },
+      {
+        "entityUrn": "urn:li:fs_miniCompany:1004",
+        "$type": "com.linkedin.voyager.entities.shared.MiniCompany",
+        "name": "Amazon Web Services",
+        "universalName": "aws-training-and-certification",
+        "objectUrn": "urn:li:company:1004",
+        "logo": {
+          "com.linkedin.common.VectorImage": {
+            "rootUrl": "https://media.licdn.com/dms/image/C/",
+            "artifacts": [
+              {
+                "width": 200,
+                "height": 200,
+                "fileIdentifyingUrlPathSegment": "200_200/aws-training-and-certification.png",
+                "expiresAt": 1800000000000
+              },
+              {
+                "width": 400,
+                "height": 400,
+                "fileIdentifyingUrlPathSegment": "400_400/aws-training-and-certification.png",
+                "expiresAt": 1800000000000
+              }
+            ]
+          }
+        }
+      },
+      {
+        "entityUrn": "urn:li:fs_miniSchool:2001",
+        "$type": "com.linkedin.voyager.entities.shared.MiniSchool",
+        "schoolName": "Indian Institute of Technology, Bombay",
+        "universalName": "iit-bombay",
+        "logo": {
+          "com.linkedin.common.VectorImage": {
+            "rootUrl": "https://media.licdn.com/dms/image/S/",
+            "artifacts": [
+              {
+                "width": 200,
+                "height": 200,
+                "fileIdentifyingUrlPathSegment": "200_200/iitb.png"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "entityUrn": "urn:li:fs_miniSchool:2002",
+        "$type": "com.linkedin.voyager.entities.shared.MiniSchool",
+        "schoolName": "National Institute of Design",
+        "universalName": "nid-india"
+      },
+      {
+        "entityUrn": "urn:li:fs_industry:4",
+        "$type": "com.linkedin.voyager.common.Industry",
+        "name": "Computer Software"
+      },
+      {
+        "entityUrn": "urn:li:fs_miniProfile:ACoAAASYNTH01",
+        "$type": "com.linkedin.voyager.identity.shared.MiniProfile",
+        "firstName": "Priya",
+        "lastName": "Raghavan",
+        "publicIdentifier": "priya-raghavan-synthetic",
+        "occupation": "Principal Data Engineer at Northwind Analytics | Streaming systems, ML platforms",
+        "influencer": false,
+        "premium": true,
+        "trackingId": "SYNTH==",
+        "picture": {
+          "com.linkedin.common.VectorImage": {
+            "rootUrl": "https://media.licdn.com/dms/image/D/profile/",
+            "artifacts": [
+              {
+                "width": 100,
+                "height": 100,
+                "fileIdentifyingUrlPathSegment": "100_100/priya.jpg",
+                "expiresAt": 1800000000000
+              },
+              {
+                "width": 200,
+                "height": 200,
+                "fileIdentifyingUrlPathSegment": "200_200/priya.jpg",
+                "expiresAt": 1800000000000
+              },
+              {
+                "width": 400,
+                "height": 400,
+                "fileIdentifyingUrlPathSegment": "400_400/priya.jpg",
+                "expiresAt": 1800000000000
+              },
+              {
+                "width": 800,
+                "height": 800,
+                "fileIdentifyingUrlPathSegment": "800_800/priya.jpg",
+                "expiresAt": 1800000000000
+              }
+            ]
+          }
+        },
+        "backgroundImage": {
+          "com.linkedin.common.VectorImage": {
+            "rootUrl": "https://media.licdn.com/dms/image/D/background/",
+            "artifacts": [
+              {
+                "width": 1400,
+                "height": 350,
+                "fileIdentifyingUrlPathSegment": "1400_350/bg.jpg"
+              }
+            ]
+          }
+        }
+      },
+      {
+        "entityUrn": "urn:li:fs_profile:ACoAAASYNTH01",
+        "$type": "com.linkedin.voyager.identity.profile.Profile",
+        "firstName": "Priya",
+        "lastName": "Raghavan",
+        "headline": "Principal Data Engineer at Northwind Analytics | Streaming systems, ML platforms",
+        "summary": "I build data platforms that stay boring under load.\n\nCurrently leading the streaming ingestion group at Northwind Analytics: Kafka, Flink, and an unreasonable number of Airflow DAGs. Previously robotics telemetry at Helios.\n\nI care about schema evolution, backpressure, and making on-call uneventful. Occasional conference speaker.",
+        "locationName": "Bengaluru, Karnataka, India",
+        "geoLocationName": "Bengaluru, Karnataka, India",
+        "geoCountryName": "India",
+        "industryName": "Computer Software",
+        "location": {
+          "basicLocation": {
+            "countryCode": "in",
+            "postalCode": "560001"
+          }
+        },
+        "standardizedPronoun": "SHE_HER",
+        "student": false,
+        "versionTag": "441297631",
+        "*miniProfile": "urn:li:fs_miniProfile:ACoAAASYNTH01",
+        "*industry": "urn:li:fs_industry:4"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Position",
+        "title": "Principal Data Engineer",
+        "companyName": "Northwind Analytics",
+        "employmentType": "Full-time",
+        "locationName": "Bengaluru, India",
+        "description": "Lead the streaming platform group (11 engineers). Rebuilt ingestion on Flink, cutting p99 event latency from 40s to 900ms and infra spend by 34%.",
+        "timePeriod": {
+          "startDate": {
+            "month": 3,
+            "year": 2022
+          }
+        },
+        "*company": "urn:li:fs_miniCompany:1001",
+        "entityUrn": "urn:li:fs_position:(urn:li:fs_profile:ACoAAASYNTH01,1)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Position",
+        "title": "Senior Data Engineer",
+        "companyName": "Helios Robotics",
+        "employmentType": "Full-time",
+        "locationName": "Bengaluru, India",
+        "description": "Telemetry pipeline for 12,000 fielded robots. Designed the schema registry rollout.",
+        "timePeriod": {
+          "startDate": {
+            "month": 7,
+            "year": 2019
+          },
+          "endDate": {
+            "month": 2,
+            "year": 2022
+          }
+        },
+        "*company": "urn:li:fs_miniCompany:1002",
+        "entityUrn": "urn:li:fs_position:(urn:li:fs_profile:ACoAAASYNTH01,2)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Position",
+        "title": "Data Engineer",
+        "companyName": "Kestrel Systems",
+        "employmentType": "Full-time",
+        "locationName": "Pune, India",
+        "description": "First data hire. Built the warehouse, the ETL, and the on-call rota.",
+        "timePeriod": {
+          "startDate": {
+            "month": 8,
+            "year": 2016
+          },
+          "endDate": {
+            "month": 6,
+            "year": 2019
+          }
+        },
+        "*company": "urn:li:fs_miniCompany:1003",
+        "entityUrn": "urn:li:fs_position:(urn:li:fs_profile:ACoAAASYNTH01,3)"
+      },
+      {
+        "entityUrn": "urn:li:fs_positionView:urn:li:fs_profile:ACoAAASYNTH01",
+        "$type": "com.linkedin.voyager.identity.profile.PositionView",
+        "*elements": [
+          "urn:li:fs_position:(urn:li:fs_profile:ACoAAASYNTH01,1)",
+          "urn:li:fs_position:(urn:li:fs_profile:ACoAAASYNTH01,2)",
+          "urn:li:fs_position:(urn:li:fs_profile:ACoAAASYNTH01,3)"
+        ],
+        "paging": {
+          "count": 3,
+          "start": 0,
+          "total": 3
+        }
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Education",
+        "schoolName": "Indian Institute of Technology, Bombay",
+        "degreeName": "Master of Technology - MTech",
+        "fieldOfStudy": "Computer Science and Engineering",
+        "grade": "9.1/10",
+        "activities": "ACM student chapter; teaching assistant for Distributed Systems",
+        "timePeriod": {
+          "startDate": {
+            "year": 2014
+          },
+          "endDate": {
+            "year": 2016
+          }
+        },
+        "*school": "urn:li:fs_miniSchool:2001",
+        "entityUrn": "urn:li:fs_education:(urn:li:fs_profile:ACoAAASYNTH01,1)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Education",
+        "schoolName": "National Institute of Design",
+        "degreeName": "Bachelor of Technology - BTech",
+        "fieldOfStudy": "Information Technology",
+        "timePeriod": {
+          "startDate": {
+            "year": 2010
+          },
+          "endDate": {
+            "year": 2014
+          }
+        },
+        "*school": "urn:li:fs_miniSchool:2002",
+        "entityUrn": "urn:li:fs_education:(urn:li:fs_profile:ACoAAASYNTH01,2)"
+      },
+      {
+        "entityUrn": "urn:li:fs_educationView:urn:li:fs_profile:ACoAAASYNTH01",
+        "$type": "com.linkedin.voyager.identity.profile.EducationView",
+        "*elements": [
+          "urn:li:fs_education:(urn:li:fs_profile:ACoAAASYNTH01,1)",
+          "urn:li:fs_education:(urn:li:fs_profile:ACoAAASYNTH01,2)"
+        ],
+        "paging": {
+          "count": 2,
+          "start": 0,
+          "total": 2
+        }
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Skill",
+        "name": "Apache Kafka",
+        "entityUrn": "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,1)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Skill",
+        "name": "Apache Flink",
+        "entityUrn": "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,2)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Skill",
+        "name": "Distributed Systems",
+        "entityUrn": "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,3)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Skill",
+        "name": "Python",
+        "entityUrn": "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,4)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Skill",
+        "name": "Scala",
+        "entityUrn": "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,5)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Skill",
+        "name": "Airflow",
+        "entityUrn": "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,6)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Skill",
+        "name": "Data Modeling",
+        "entityUrn": "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,7)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Skill",
+        "name": "Kubernetes",
+        "entityUrn": "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,8)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Skill",
+        "name": "dbt",
+        "entityUrn": "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,9)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Skill",
+        "name": "Snowflake",
+        "entityUrn": "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,10)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Skill",
+        "name": "Stream Processing",
+        "entityUrn": "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,11)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Skill",
+        "name": "Terraform",
+        "entityUrn": "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,12)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Skill",
+        "name": "PostgreSQL",
+        "entityUrn": "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,13)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Skill",
+        "name": "Observability",
+        "entityUrn": "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,14)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Skill",
+        "name": "Technical Leadership",
+        "entityUrn": "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,15)"
+      },
+      {
+        "entityUrn": "urn:li:fs_skillView:urn:li:fs_profile:ACoAAASYNTH01",
+        "$type": "com.linkedin.voyager.identity.profile.SkillView",
+        "*elements": [
+          "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,1)",
+          "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,2)",
+          "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,3)",
+          "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,4)",
+          "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,5)",
+          "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,6)",
+          "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,7)",
+          "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,8)",
+          "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,9)",
+          "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,10)",
+          "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,11)",
+          "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,12)",
+          "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,13)",
+          "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,14)",
+          "urn:li:fs_skill:(urn:li:fs_profile:ACoAAASYNTH01,15)"
+        ],
+        "paging": {
+          "count": 15,
+          "start": 0,
+          "total": 15
+        }
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Certification",
+        "name": "AWS Certified Solutions Architect - Professional",
+        "authority": "Amazon Web Services",
+        "licenseNumber": "AWS-PSA-884213",
+        "url": "https://aws.amazon.com/verification",
+        "timePeriod": {
+          "startDate": {
+            "month": 5,
+            "year": 2023
+          },
+          "endDate": {
+            "month": 5,
+            "year": 2026
+          }
+        },
+        "*company": "urn:li:fs_miniCompany:1004",
+        "entityUrn": "urn:li:fs_certification:(urn:li:fs_profile:ACoAAASYNTH01,1)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Certification",
+        "name": "Confluent Certified Developer for Apache Kafka",
+        "authority": "Confluent",
+        "timePeriod": {
+          "startDate": {
+            "month": 11,
+            "year": 2021
+          }
+        },
+        "entityUrn": "urn:li:fs_certification:(urn:li:fs_profile:ACoAAASYNTH01,2)"
+      },
+      {
+        "entityUrn": "urn:li:fs_certificationView:urn:li:fs_profile:ACoAAASYNTH01",
+        "$type": "com.linkedin.voyager.identity.profile.CertificationView",
+        "*elements": [
+          "urn:li:fs_certification:(urn:li:fs_profile:ACoAAASYNTH01,1)",
+          "urn:li:fs_certification:(urn:li:fs_profile:ACoAAASYNTH01,2)"
+        ],
+        "paging": {
+          "count": 2,
+          "start": 0,
+          "total": 2
+        }
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Language",
+        "name": "English",
+        "proficiency": "NATIVE_OR_BILINGUAL",
+        "entityUrn": "urn:li:fs_language:(urn:li:fs_profile:ACoAAASYNTH01,1)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Language",
+        "name": "Tamil",
+        "proficiency": "NATIVE_OR_BILINGUAL",
+        "entityUrn": "urn:li:fs_language:(urn:li:fs_profile:ACoAAASYNTH01,2)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Language",
+        "name": "Hindi",
+        "proficiency": "PROFESSIONAL_WORKING",
+        "entityUrn": "urn:li:fs_language:(urn:li:fs_profile:ACoAAASYNTH01,3)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Language",
+        "name": "German",
+        "proficiency": "ELEMENTARY",
+        "entityUrn": "urn:li:fs_language:(urn:li:fs_profile:ACoAAASYNTH01,4)"
+      },
+      {
+        "entityUrn": "urn:li:fs_languageView:urn:li:fs_profile:ACoAAASYNTH01",
+        "$type": "com.linkedin.voyager.identity.profile.LanguageView",
+        "*elements": [
+          "urn:li:fs_language:(urn:li:fs_profile:ACoAAASYNTH01,1)",
+          "urn:li:fs_language:(urn:li:fs_profile:ACoAAASYNTH01,2)",
+          "urn:li:fs_language:(urn:li:fs_profile:ACoAAASYNTH01,3)",
+          "urn:li:fs_language:(urn:li:fs_profile:ACoAAASYNTH01,4)"
+        ],
+        "paging": {
+          "count": 4,
+          "start": 0,
+          "total": 4
+        }
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Project",
+        "title": "openschema",
+        "description": "Open-source schema-evolution linter for Avro and Protobuf. 2.1k stars.",
+        "url": "https://github.com/example/openschema",
+        "timePeriod": {
+          "startDate": {
+            "month": 1,
+            "year": 2021
+          }
+        },
+        "members": [
+          {
+            "name": "Priya Raghavan"
+          },
+          {
+            "name": "Devansh Kapoor"
+          }
+        ],
+        "entityUrn": "urn:li:fs_project:(urn:li:fs_profile:ACoAAASYNTH01,1)"
+      },
+      {
+        "entityUrn": "urn:li:fs_projectView:urn:li:fs_profile:ACoAAASYNTH01",
+        "$type": "com.linkedin.voyager.identity.profile.ProjectView",
+        "*elements": [
+          "urn:li:fs_project:(urn:li:fs_profile:ACoAAASYNTH01,1)"
+        ],
+        "paging": {
+          "count": 1,
+          "start": 0,
+          "total": 1
+        }
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Honor",
+        "title": "Engineering Excellence Award",
+        "issuer": "Northwind Analytics",
+        "description": "For the Flink ingestion migration.",
+        "issueDate": {
+          "month": 12,
+          "year": 2023
+        },
+        "entityUrn": "urn:li:fs_honor:(urn:li:fs_profile:ACoAAASYNTH01,1)"
+      },
+      {
+        "entityUrn": "urn:li:fs_honorView:urn:li:fs_profile:ACoAAASYNTH01",
+        "$type": "com.linkedin.voyager.identity.profile.HonorView",
+        "*elements": [
+          "urn:li:fs_honor:(urn:li:fs_profile:ACoAAASYNTH01,1)"
+        ],
+        "paging": {
+          "count": 1,
+          "start": 0,
+          "total": 1
+        }
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Course",
+        "name": "Advanced Distributed Systems",
+        "number": "CS 745",
+        "entityUrn": "urn:li:fs_course:(urn:li:fs_profile:ACoAAASYNTH01,1)"
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Course",
+        "name": "Stochastic Models",
+        "number": "MA 611",
+        "entityUrn": "urn:li:fs_course:(urn:li:fs_profile:ACoAAASYNTH01,2)"
+      },
+      {
+        "entityUrn": "urn:li:fs_courseView:urn:li:fs_profile:ACoAAASYNTH01",
+        "$type": "com.linkedin.voyager.identity.profile.CourseView",
+        "*elements": [
+          "urn:li:fs_course:(urn:li:fs_profile:ACoAAASYNTH01,1)",
+          "urn:li:fs_course:(urn:li:fs_profile:ACoAAASYNTH01,2)"
+        ],
+        "paging": {
+          "count": 2,
+          "start": 0,
+          "total": 2
+        }
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.VolunteerExperience",
+        "role": "Mentor",
+        "companyName": "Code for Bengaluru",
+        "cause": "SCIENCE_AND_TECHNOLOGY",
+        "description": "Weekend mentoring for first-generation CS students.",
+        "timePeriod": {
+          "startDate": {
+            "month": 6,
+            "year": 2020
+          }
+        },
+        "entityUrn": "urn:li:fs_volunteerExperience:(urn:li:fs_profile:ACoAAASYNTH01,1)"
+      },
+      {
+        "entityUrn": "urn:li:fs_volunteerExperienceView:urn:li:fs_profile:ACoAAASYNTH01",
+        "$type": "com.linkedin.voyager.identity.profile.VolunteerExperienceView",
+        "*elements": [
+          "urn:li:fs_volunteerExperience:(urn:li:fs_profile:ACoAAASYNTH01,1)"
+        ],
+        "paging": {
+          "count": 1,
+          "start": 0,
+          "total": 1
+        }
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Publication",
+        "name": "Backpressure-Aware Windowing for Late-Arriving Telemetry",
+        "publisher": "ACM SIGMOD Record",
+        "description": "A practitioner report on windowing under sustained lag.",
+        "url": "https://example.org/paper",
+        "date": {
+          "month": 6,
+          "year": 2023
+        },
+        "authors": [
+          {
+            "name": "Priya Raghavan"
+          },
+          {
+            "name": "S. Iyer"
+          }
+        ],
+        "entityUrn": "urn:li:fs_publication:(urn:li:fs_profile:ACoAAASYNTH01,1)"
+      },
+      {
+        "entityUrn": "urn:li:fs_publicationView:urn:li:fs_profile:ACoAAASYNTH01",
+        "$type": "com.linkedin.voyager.identity.profile.PublicationView",
+        "*elements": [
+          "urn:li:fs_publication:(urn:li:fs_profile:ACoAAASYNTH01,1)"
+        ],
+        "paging": {
+          "count": 1,
+          "start": 0,
+          "total": 1
+        }
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.TestScore",
+        "name": "GATE (Computer Science)",
+        "score": "AIR 214",
+        "date": {
+          "year": 2014
+        },
+        "entityUrn": "urn:li:fs_testScore:(urn:li:fs_profile:ACoAAASYNTH01,1)"
+      },
+      {
+        "entityUrn": "urn:li:fs_testScoreView:urn:li:fs_profile:ACoAAASYNTH01",
+        "$type": "com.linkedin.voyager.identity.profile.TestScoreView",
+        "*elements": [
+          "urn:li:fs_testScore:(urn:li:fs_profile:ACoAAASYNTH01,1)"
+        ],
+        "paging": {
+          "count": 1,
+          "start": 0,
+          "total": 1
+        }
+      },
+      {
+        "$type": "com.linkedin.voyager.identity.profile.Organization",
+        "name": "ACM India",
+        "position": "Member",
+        "timePeriod": {
+          "startDate": {
+            "year": 2015
+          }
+        },
+        "entityUrn": "urn:li:fs_organization:(urn:li:fs_profile:ACoAAASYNTH01,1)"
+      },
+      {
+        "entityUrn": "urn:li:fs_organizationView:urn:li:fs_profile:ACoAAASYNTH01",
+        "$type": "com.linkedin.voyager.identity.profile.OrganizationView",
+        "*elements": [
+          "urn:li:fs_organization:(urn:li:fs_profile:ACoAAASYNTH01,1)"
+        ],
+        "paging": {
+          "count": 1,
+          "start": 0,
+          "total": 1
+        }
+      },
+      {
+        "entityUrn": "urn:li:fs_profileNetworkInfo:urn:li:fs_profile:ACoAAASYNTH01",
+        "$type": "com.linkedin.voyager.identity.profile.ProfileNetworkInfo",
+        "connectionsCount": 1847,
+        "followersCount": 3260,
+        "distance": {
+          "value": "DISTANCE_2"
+        }
+      }
+    ]
+  },
+  "contact_info": null
+}

@@ -1,0 +1,49 @@
+# Fly.io alternative. Worth choosing over Render for one specific reason: you
+# pick the region, and running close to where the LinkedIn account normally
+# logs in materially reduces the chance of a security checkpoint. A session
+# minted in Bengaluru and then used from Virginia looks like a stolen cookie.
+#
+#   fly launch --no-deploy
+#   fly secrets set LI_AT='AQED...' JSESSIONID='ajax:123...'
+#   fly volumes create cache --size 1 --region bom
+#   fly deploy
+
+app = "linkedin-profile-api"
+primary_region = "bom"        # Mumbai. Change to match the account's usual location.
+
+[build]
+  dockerfile = "Dockerfile"
+
+[env]
+  PORT = "8000"
+  CACHE_PATH = "/app/data/cache.sqlite3"
+  MAX_PROFILES_PER_HOUR = "12"
+  MAX_PROFILES_PER_DAY = "80"
+  MIN_DELAY_SECONDS = "3.0"
+  MAX_DELAY_SECONDS = "9.0"
+  LOG_LEVEL = "INFO"
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = "suspend"
+  auto_start_machines = true
+  min_machines_running = 0
+
+  [[http_service.checks]]
+    interval = "30s"
+    timeout = "5s"
+    grace_period = "10s"
+    method = "GET"
+    path = "/health"
+
+# One machine only. Two machines means two independent SQLite caches and two
+# independent rate limiters sharing one LinkedIn account, which would quietly
+# double the request rate LinkedIn sees.
+[[vm]]
+  size = "shared-cpu-1x"
+  memory = "512mb"
+
+[mounts]
+  source = "cache"
+  destination = "/app/data"

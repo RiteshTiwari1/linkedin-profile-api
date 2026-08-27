@@ -1,0 +1,20 @@
+[project]
+name = "linkedin-profile-api"
+version = "1.0.0"
+description = "A LinkedIn profile URL in, structured JSON out."
+requires-python = ">=3.11"
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "W"]
+# B008 flags `Depends(...)` in argument defaults, which is FastAPI's documented
+# dependency-injection idiom, not a mutable-default bug.
+ignore = ["B008"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+filterwarnings = ["ignore::DeprecationWarning"]

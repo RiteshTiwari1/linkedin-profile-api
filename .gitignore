@@ -1,0 +1,38 @@
+# Secrets -- never commit
+.env
+.env.*
+!.env.example
+*.pem
+cookies.json
+sessions.json
+
+# Runtime data
+data/
+*.sqlite3
+*.db
+logs/
+
+# Captured LinkedIn payloads may contain personal data
+fixtures/raw/*.json
+!fixtures/raw/.gitkeep
+!fixtures/raw/synthetic_*.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/
+
+profiles.txt

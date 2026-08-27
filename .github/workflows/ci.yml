@@ -1,0 +1,79 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - run: pip install -r requirements-dev.txt
+
+      - name: Lint
+        run: ruff check app/ tests/ scripts/
+
+      # The suite is fully offline -- no LinkedIn credentials in CI, by design.
+      - name: Test
+        run: pytest tests/ -q
+
+      - name: Verify the app boots without credentials
+        run: |
+          DEMO_MODE=true CACHE_PATH=":memory:" uvicorn app.main:app --port 8000 &
+          for i in $(seq 1 40); do curl -sf localhost:8000/health && break; sleep 0.5; done
+          curl -sf "localhost:8000/v1/profile?url=priya-raghavan-synthetic" > /dev/null
+
+  no-browser:
+    # The brief requires a purely reverse-engineered solution that hits LinkedIn
+    # endpoints directly, with no browser. This makes that a build gate rather
+    # than a promise in the README.
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fail if any browser-automation dependency appears
+        run: |
+          if grep -rIniE 'playwright|selenium|puppeteer|pyppeteer|webdriver|chromedriver|browserless|headless.?chrom' \
+               --include='*.py' --include='*.txt' --include='*.toml' \
+               --include='*.yml' --include='*.yaml' --include='Dockerfile' \
+               --exclude-dir=.github . ; then
+            echo "::error::A browser-automation dependency was introduced. This project must use direct HTTP only."
+            exit 1
+          fi
+          echo "no browser dependencies -- direct HTTP only"
+
+  secrets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fail if a session cookie was ever committed
+        run: |
+          # Only li_at is a credential. It starts with AQED and real values run
+          # to 150+ characters, so the length bound is what separates a leaked
+          # cookie from the truncated placeholders in README.md and .env.example.
+          # JSESSIONID is deliberately not scanned: on its own it is a CSRF
+          # token, worthless without li_at.
+          if grep -rInE 'AQED[A-Za-z0-9_+/=-]{80,}' \
+               --exclude-dir=.git --exclude-dir=.github --exclude-dir=.venv . ; then
+            echo "::error::A real li_at session cookie appears to be committed."
+            exit 1
+          fi
+          echo "no committed credentials found"
+
+      - name: Fail if .env was committed
+        run: |
+          if git ls-files --error-unmatch .env 2>/dev/null; then
+            echo "::error::.env is tracked by git."
+            exit 1
+          fi
+          echo ".env is not tracked"

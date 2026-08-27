@@ -1,0 +1,7 @@
+# One LinkedIn profile URL per line. Lines starting with # are ignored.
+# Copy to profiles.txt and run: python scripts/warm_cache.py profiles.txt
+#
+# Warm the cache with the profiles most likely to be tried, so those requests
+# are served from SQLite instead of spending the daily LinkedIn budget.
+https://www.linkedin.com/in/satyanadella
+https://www.linkedin.com/in/williamhgates

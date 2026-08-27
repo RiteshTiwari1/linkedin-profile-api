@@ -1,0 +1,47 @@
+# Render blueprint. Push to GitHub, then New > Blueprint and point it here.
+#
+# Set LI_AT and JSESSIONID in the Render dashboard (Environment > Secret), never
+# in this file -- it is committed.
+services:
+  - type: web
+    name: linkedin-profile-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    plan: free
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: LI_AT
+        sync: false          # prompts in the dashboard; never stored in git
+      - key: JSESSIONID
+        sync: false
+      - key: API_KEYS
+        sync: false
+      - key: REQUIRE_API_KEY
+        value: "false"
+      - key: DEMO_MODE
+        value: "false"
+      - key: MAX_PROFILES_PER_HOUR
+        value: "12"
+      - key: MAX_PROFILES_PER_DAY
+        value: "80"
+      - key: MIN_DELAY_SECONDS
+        value: "3.0"
+      - key: MAX_DELAY_SECONDS
+        value: "9.0"
+      - key: CACHE_ENABLED
+        value: "true"    # on for the public demo; see README
+      - key: CACHE_TTL_SECONDS
+        value: "86400"
+      - key: CACHE_STALE_MAX_SECONDS
+        value: "2592000"
+      - key: CACHE_PATH
+        value: "/app/data/cache.sqlite3"
+      - key: LOG_LEVEL
+        value: "INFO"
+    # Render's free tier has an ephemeral filesystem, so the cache is lost on
+    # redeploy and on cold start. Attach a disk on a paid plan to keep it:
+    # disk:
+    #   name: cache
+    #   mountPath: /app/data
+    #   sizeGB: 1
