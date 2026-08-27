@@ -53,6 +53,22 @@ class _Retry(Exception):
     """Internal: LinkedIn bounced us to the same place; retry with new cookies."""
 
 
+class _MaybeBlocked(Exception):
+    """Internal: LinkedIn refused this request. Session's fault, or the profile's?
+
+    LinkedIn does not 404 a vanity name that does not exist -- it pushes back the
+    same way it pushes back on a bot. Read as a session problem, a single typo'd
+    URL puts a healthy cookie into cooldown and every later request fails with
+    it. So the two cases are separated by asking LinkedIn directly, which is
+    cheap and decisive, instead of guessing.
+    """
+
+    def __init__(self, reason: str, detail: str = "") -> None:
+        self.reason = reason
+        self.detail = detail
+        super().__init__(reason)
+
+
 _CHALLENGE_MARKERS = (
     "/checkpoint/challenge",
     "/checkpoint/lg/login",
@@ -228,6 +244,29 @@ class VoyagerClient:
                         f"without ever answering."
                     )
                     break
+                except _MaybeBlocked as pushback:
+                    alive = await self._session_still_works(client, session)
+                    if alive:
+                        # The cookie is fine, so LinkedIn refused *this lookup*.
+                        # Overwhelmingly a vanity name that does not exist; it can
+                        # also be a profile these credentials may not read.
+                        self._pool.report_success(session)
+                        raise ProfileNotFound(
+                            "LinkedIn refused this profile lookup while still "
+                            "accepting the session, so the profile most likely "
+                            "does not exist. It may also be restricted.",
+                            details={"upstream": pushback.reason, "path": path},
+                        ) from None
+                    self._pool.report_failure(
+                        session, FailureKind.CHALLENGE, pushback.reason
+                    )
+                    last_error = UpstreamBlocked(
+                        f"LinkedIn pushed back ({pushback.reason}) and rejected a "
+                        f"session probe too, so the session is now in cooldown. "
+                        f"{pushback.detail}",
+                        retry_after=session.cooldown_remaining or 3600,
+                    )
+                    break
                 except (UpstreamBlocked, SessionExpired, UpstreamError) as exc:
                     # Session-level problem: rotate to the next session.
                     last_error = exc
@@ -261,26 +300,14 @@ class VoyagerClient:
         if status in (301, 302, 303, 307, 308):
             location = response.headers.get("location", "")
             if any(marker in location.lower() for marker in _CHALLENGE_MARKERS):
-                self._pool.report_failure(
-                    session, FailureKind.CHALLENGE, f"redirect {location[:60]}"
-                )
-                raise UpstreamBlocked(
-                    "LinkedIn redirected to a security checkpoint. Open LinkedIn "
-                    "in a browser with this account and clear the challenge.",
-                    details={"location": location[:200]},
-                )
+                raise _MaybeBlocked("checkpoint redirect", location[:200])
             # A bounce to the same URL is LinkedIn's datacenter-affinity hop: it
             # sets `lidc` and expects a retry. The cookies it just set are now in
             # the jar, so retrying is meaningful rather than a loop.
             raise _Retry(location or str(response.url))
 
         if status == HTTP_LINKEDIN_BLOCKED:
-            self._pool.report_failure(session, FailureKind.CHALLENGE, "HTTP 999")
-            raise UpstreamBlocked(
-                "LinkedIn returned HTTP 999 -- its automated-traffic block. The "
-                "session is now in cooldown.",
-                retry_after=session.cooldown_remaining or 3600,
-            )
+            raise _MaybeBlocked("HTTP 999", "LinkedIn's automated-traffic block.")
 
         if status == 401:
             self._pool.report_failure(session, FailureKind.EXPIRED, "401")
@@ -295,8 +322,7 @@ class VoyagerClient:
                     "LinkedIn rejected the CSRF token. The csrf-token header must "
                     "equal the JSESSIONID cookie value without its quotes."
                 )
-            self._pool.report_failure(session, FailureKind.CHALLENGE, "403")
-            raise UpstreamBlocked("LinkedIn refused the request with 403.")
+            raise _MaybeBlocked("403", "LinkedIn refused the request.")
 
         if status == 404:
             self._pool.report_success(session)  # the session is fine; the profile is not
@@ -342,8 +368,7 @@ class VoyagerClient:
         if "json" not in content_type:
             snippet = response.text[:600].lower()
             if any(marker in snippet for marker in _CHALLENGE_MARKERS):
-                self._pool.report_failure(session, FailureKind.CHALLENGE, "html authwall")
-                raise UpstreamBlocked("LinkedIn served a login/challenge page instead of JSON.")
+                raise _MaybeBlocked("html authwall", "A login page was served instead of JSON.")
             self._pool.report_failure(session, FailureKind.TRANSIENT, f"ct={content_type[:40]}")
             raise UpstreamError(f"Expected JSON from LinkedIn, got {content_type!r}.")
 
@@ -358,6 +383,32 @@ class VoyagerClient:
         if not isinstance(payload, dict):
             raise UpstreamError("LinkedIn returned a non-object JSON body.")
         return payload
+
+    async def _session_still_works(
+        self, client: httpx.AsyncClient, session: LinkedInSession
+    ) -> bool:
+        """Ask LinkedIn whether the cookie is still good.
+
+        Deliberately raw: it reuses the session's own client but goes nowhere near
+        `_get`, so it cannot recurse or rotate sessions. It also skips the rate
+        limiter -- one small request on a failure path, and the answer decides
+        whether to cool a cookie for an hour, which is worth more than the pacing.
+        """
+        try:
+            response = await client.get(
+                ep.BASE + ep.ME,
+                headers=ep.build_headers(
+                    self._csrf_for(client, session), self._settings.user_agent
+                ),
+            )
+        except httpx.HTTPError:
+            return False
+        self.request_count += 1
+        if self._is_logout(response):
+            return False
+        return response.status_code == 200 and "json" in response.headers.get(
+            "content-type", ""
+        )
 
     @staticmethod
     def _is_logout(response: httpx.Response) -> bool:

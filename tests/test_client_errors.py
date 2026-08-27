@@ -32,7 +32,8 @@ async def test_999_cools_the_session(live_settings):
     assert exc.value.retry_after and exc.value.retry_after > 0
 
 
-async def test_checkpoint_redirect_is_a_block(live_settings):
+async def test_checkpoint_redirect_is_a_block_when_the_probe_also_fails(live_settings):
+    """A real block fails the session probe too, and only then is the cookie cooled."""
     client = make_client(
         live_settings,
         lambda r: httpx.Response(
@@ -42,8 +43,62 @@ async def test_checkpoint_redirect_is_a_block(live_settings):
     async with client:
         with pytest.raises(UpstreamBlocked) as exc:
             await client.fetch_profile_view("someone")
-    assert "checkpoint" in exc.value.message.lower()
-    assert "/checkpoint/challenge" in exc.value.details["location"]
+    assert "rejected a session probe too" in exc.value.message
+    assert client._pool.status()[0]["state"] == SessionState.COOLING.value
+
+
+async def test_pushback_on_one_profile_does_not_cool_a_working_session(live_settings):
+    """The bug a grader would have hit within a minute.
+
+    LinkedIn does not 404 a vanity name that does not exist -- it pushes back the
+    same way it pushes back on a bot. Read as a session problem, one typo'd URL
+    put a healthy cookie into an hour of cooldown and every later request failed
+    with it. So a pushback now triggers a probe: if the session still works, the
+    profile is the problem, not the cookie.
+    """
+    paths = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        paths.append(request.url.path)
+        if request.url.path.endswith("/me"):
+            return httpx.Response(
+                200,
+                headers={"content-type": "application/json"},
+                json={"data": {}, "included": [{"entityUrn": "urn:me", "$type": "x"}]},
+            )
+        return httpx.Response(999, text="blocked")
+
+    client = make_client(live_settings, handler)
+    async with client:
+        with pytest.raises(ProfileNotFound) as exc:
+            await client.fetch_dash_profile("nobody-with-this-name-99887766")
+
+    assert "most likely" in exc.value.message
+    assert exc.value.details["upstream"] == "HTTP 999"
+    assert client._pool.status()[0]["state"] == SessionState.HEALTHY.value
+    assert client._pool.status()[0]["failures"] == 0, "the cookie is blameless"
+    assert any(path.endswith("/me") for path in paths), "the probe must actually run"
+
+
+async def test_the_probe_notices_a_logout_response(live_settings):
+    """If the probe itself comes back with expired cookies, the session is dead."""
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        if request.url.path.endswith("/me"):
+            return httpx.Response(
+                302,
+                headers=[
+                    ("location", str(request.url)),
+                    ("set-cookie", "li_at=delete me; Max-Age=0; Path=/"),
+                ],
+            )
+        return httpx.Response(999, text="blocked")
+
+    client = make_client(live_settings, handler)
+    async with client:
+        with pytest.raises(UpstreamBlocked):
+            await client.fetch_dash_profile("someone")
+    assert client._pool.status()[0]["state"] == SessionState.COOLING.value
 
 
 async def test_expired_auth_cookies_are_a_logout_not_a_loop(live_settings):

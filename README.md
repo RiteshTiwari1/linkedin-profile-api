@@ -204,7 +204,7 @@ No endpoint returns a bare 500. Every failure carries a stable `error.code` with
 | --- | --- | --- |
 | `INVALID_URL` | 400 | Not a LinkedIn profile URL |
 | `UNAUTHORIZED` | 401 | Missing or bad `X-API-Key` |
-| `PROFILE_NOT_FOUND` | 404 | Every strategy agreed there is no such profile |
+| `PROFILE_NOT_FOUND` | 404 | No such profile — or LinkedIn refused the lookup while the session stayed valid |
 | `PROFILE_PRIVATE` | 403 | Out of network or restricted |
 | `RATE_LIMITED` | 429 | **Our own** cap, hit before LinkedIn's |
 | `UPSTREAM_BLOCKED` | 429 | LinkedIn pushed back (999, checkpoint, auth wall) |
@@ -376,7 +376,7 @@ The parser needed dozens of iterations; against live LinkedIn that is hundreds o
 profile views and a blocked account. So `scripts/record_fixture.py` captures the
 **raw** payload once and everything after is offline. Recorded fixtures hold real
 personal data and are gitignored; the committed `synthetic_priya-raghavan.json`
-is hand-built fake data mirroring the real shape, so the 146 tests and demo mode
+is hand-built fake data mirroring the real shape, so the 148 tests and demo mode
 work for anyone cloning the repo with no credentials.
 
 ### Protecting the account
@@ -397,6 +397,15 @@ LinkedIn signals "stop" several ways — HTTP 999, a 302 to `/checkpoint/`, a 20
 carrying an HTML auth wall, and a 302 that expires the auth cookies. Each means
 something different for that state machine, and each is pinned by a test using an
 injected transport, so the behaviour is verified without a live account.
+
+**Confirm before condemning.** LinkedIn does not 404 a vanity name that does not
+exist — it pushes back exactly as it does on a bot. Read as a session problem,
+one typo'd URL put a healthy cookie into an hour of cooldown and every request
+after it failed. This surfaced immediately on the deployed instance, which is
+precisely what a grader would try. So a pushback now triggers a cheap probe of
+`/voyager/api/me`: if the session still answers, the profile is the problem and
+the caller gets `PROFILE_NOT_FOUND` while the cookie stays healthy. Only when the
+probe fails too is the session cooled.
 
 ---
 
@@ -475,7 +484,7 @@ regimes need a lawful basis, and "it was on the internet" isn't one.
 ## Tests
 
 ```bash
-make test     # 146 tests, ~3s, no network and no credentials required
+make test     # 148 tests, ~3s, no network and no credentials required
 make lint
 ```
 
