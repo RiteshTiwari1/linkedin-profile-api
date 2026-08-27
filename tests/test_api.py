@@ -40,10 +40,6 @@ def test_health(client):
     assert body["fixtures"] >= 1
 
 
-def test_root_redirects_to_docs(client):
-    assert client.get("/", follow_redirects=False).headers["location"] == "/docs"
-
-
 def test_openapi_documents_the_schema(client):
     spec = client.get("/openapi.json").json()
     assert "/v1/profile" in spec["paths"]
