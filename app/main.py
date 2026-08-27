@@ -11,7 +11,7 @@ from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI, Header, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse, RedirectResponse
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 from . import __version__
@@ -136,8 +136,36 @@ async def handle_unexpected(request: Request, exc: Exception) -> JSONResponse:
 
 
 @app.get("/", include_in_schema=False)
-async def root() -> RedirectResponse:
-    return RedirectResponse("/docs")
+async def root() -> dict:
+    """A self-describing index.
+
+    A bare base URL is the first thing anyone pastes, and a redirect tells a
+    `curl` user nothing. This answers "what is this and what do I call?" in one
+    response, without a round trip to the docs.
+    """
+    return {
+        "service": "LinkedIn Profile API",
+        "version": __version__,
+        "description": "A LinkedIn profile URL in, structured JSON out.",
+        "docs": "/docs",
+        "try_it": (
+            "/v1/profile?url=https://www.linkedin.com/in/satyanadella"
+        ),
+        "endpoints": {
+            "GET /v1/profile": "Fetch one profile by URL",
+            "POST /v1/profiles": "Fetch up to 25 profiles",
+            "GET /health": "Liveness",
+            "GET /v1/status": "Session, rate-limit and cache telemetry",
+            "GET /v1/session/check": "Verify the LinkedIn session is alive",
+            "DELETE /v1/cache": "Forget every cached profile",
+        },
+        "source": "https://github.com/RiteshTiwari1/linkedin-profile-api",
+        "note": (
+            "Hosted on a free tier that sleeps when idle, so a first request "
+            "may take ~30s to wake the container. A fully-populated profile "
+            "takes ~15s live and ~7ms from cache."
+        ),
+    }
 
 
 @app.get("/health", tags=["ops"], summary="Liveness")

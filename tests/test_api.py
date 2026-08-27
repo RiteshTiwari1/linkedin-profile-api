@@ -151,3 +151,17 @@ def test_api_key_enforced_when_configured(tmp_path, monkeypatch):
     finally:
         app.dependency_overrides.clear()
         get_settings.cache_clear()
+
+
+def test_root_describes_the_service(client):
+    """A bare base URL is the first thing anyone pastes.
+
+    It used to redirect to /docs, which tells a `curl` user nothing -- and on a
+    free tier that sleeps, a slow redirect to an HTML page reads as a dead site.
+    """
+    body = client.get("/").json()
+    assert body["service"] == "LinkedIn Profile API"
+    assert body["docs"] == "/docs"
+    assert "GET /v1/profile" in body["endpoints"]
+    assert body["source"].startswith("https://github.com/")
+    assert "~30s" in body["note"], "the cold start must be explained, not hidden"
