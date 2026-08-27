@@ -4,7 +4,7 @@
 # minted in Bengaluru and then used from Virginia looks like a stolen cookie.
 #
 #   fly launch --no-deploy
-#   fly secrets set LI_AT='AQED...' JSESSIONID='ajax:123...'
+#   fly secrets set LINKEDIN_COOKIE='bcookie="v=2&..."; ...; li_at=AQED...'
 #   fly volumes create cache --size 1 --region bom
 #   fly deploy
 
