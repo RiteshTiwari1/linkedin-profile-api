@@ -29,6 +29,7 @@ import httpx
 from ..config import Settings
 from ..errors import (
     ApiError,
+    EndpointRetired,
     ProfileNotFound,
     ProfilePrivate,
     RateLimited,
@@ -343,7 +344,7 @@ class VoyagerClient:
             # profileView, which is why the strategy chain exists at all. The
             # session is fine, so do not penalise it -- just move on.
             self._pool.report_success(session)
-            raise UpstreamError(
+            raise EndpointRetired(
                 f"LinkedIn has retired this endpoint (410 Gone): {path}. "
                 f"Falling through to the next strategy."
             )

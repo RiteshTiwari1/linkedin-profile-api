@@ -26,6 +26,7 @@ from .cache import ProfileCache
 from .config import Settings
 from .errors import (
     ApiError,
+    EndpointRetired,
     FixtureMissing,
     NoSessionsConfigured,
     ParseFailed,
@@ -177,6 +178,7 @@ class ProfileService:
         ]
 
         failures: dict[str, str] = {}
+        skipped: dict[str, str] = {}
         profile: Profile | None = None
         used: str | None = None
         raw: dict[str, Any] | None = None
@@ -187,6 +189,12 @@ class ProfileService:
                 profile = parse(raw, public_id)
             except _ABORT_CHAIN:
                 raise
+            except EndpointRetired as exc:
+                # The strategy never ran, so it gets no vote on whether the
+                # profile exists -- otherwise a retired endpoint turns a working
+                # strategy's "no such profile" into a 502.
+                skipped[name] = exc.code
+                continue
             except ApiError as exc:
                 # A 404 here can mean "endpoint retired for this account" just
                 # as easily as "no such profile", so keep walking the chain and
@@ -201,7 +209,7 @@ class ProfileService:
             break
 
         if profile is None or used is None or raw is None:
-            detail = {"attempted": failures}
+            detail = {"attempted": failures, "skipped": skipped}
             # Only strategies that actually ran get a vote on existence.
             if failures and all(code == "PROFILE_NOT_FOUND" for code in failures.values()):
                 raise ProfileNotFound(details=detail)

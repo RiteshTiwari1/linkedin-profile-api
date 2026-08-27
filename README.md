@@ -210,6 +210,7 @@ No endpoint returns a bare 500. Every failure carries a stable `error.code` with
 | `UPSTREAM_BLOCKED` | 429 | LinkedIn pushed back (999, checkpoint, auth wall) |
 | `SESSION_EXPIRED` | 503 | The cookie is dead — refresh `LINKEDIN_COOKIE` |
 | `NO_SESSIONS_CONFIGURED` | 503 | No credentials set |
+| `ENDPOINT_RETIRED` | 502 | LinkedIn answered 410 Gone; never surfaced alone — the chain moves on |
 | `UPSTREAM_ERROR` | 502 | LinkedIn misbehaved |
 | `PARSE_FAILED` | 502 | Fetched but could not map — LinkedIn changed shape |
 
@@ -376,7 +377,7 @@ The parser needed dozens of iterations; against live LinkedIn that is hundreds o
 profile views and a blocked account. So `scripts/record_fixture.py` captures the
 **raw** payload once and everything after is offline. Recorded fixtures hold real
 personal data and are gitignored; the committed `synthetic_priya-raghavan.json`
-is hand-built fake data mirroring the real shape, so the 148 tests and demo mode
+is hand-built fake data mirroring the real shape, so the 149 tests and demo mode
 work for anyone cloning the repo with no credentials.
 
 ### Protecting the account
@@ -484,7 +485,7 @@ regimes need a lawful basis, and "it was on the internet" isn't one.
 ## Tests
 
 ```bash
-make test     # 148 tests, ~3s, no network and no credentials required
+make test     # 149 tests, ~3s, no network and no credentials required
 make lint
 ```
 

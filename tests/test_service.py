@@ -506,3 +506,33 @@ async def test_retention_defaults_are_short():
     s = Settings(_env_file=None)
     assert s.cache_ttl_seconds <= 3_600, "fresh window should be an hour or less"
     assert s.cache_stale_max_seconds <= 86_400, "data must not be retained for weeks"
+
+
+async def test_a_retired_endpoint_cannot_outvote_a_real_verdict(live_settings):
+    """The bug the deployed instance showed: a typo'd URL returned 502, not 404.
+
+    dash correctly concluded "no such profile", then profileView answered 410
+    Gone -- and that retired-endpoint error was counted as a failed attempt,
+    which made the votes non-unanimous and produced UPSTREAM_ERROR. A strategy
+    that never ran gets no vote.
+    """
+
+    def handler(request):
+        if "profileView" in request.url.path:
+            return httpx.Response(410)
+        if request.url.path.endswith("/me"):
+            # The session probe: cookie is fine, so the profile is the problem.
+            return json_response({"data": {}, "included": [{"entityUrn": "urn:me", "$type": "x"}]})
+        return httpx.Response(999, text="blocked")
+
+    service = await build_service(live_settings, handler)
+    try:
+        with pytest.raises(ProfileNotFound) as exc:
+            await service.get_profile("definitely-nobody-99887766")
+        assert exc.value.status_code == 404
+        assert exc.value.details["skipped"]["profile_view"] == "ENDPOINT_RETIRED"
+        # And the cookie is untouched by any of it.
+        assert service.pool.status()[0]["state"] == "healthy"
+        assert service.pool.status()[0]["failures"] == 0
+    finally:
+        await service.shutdown()

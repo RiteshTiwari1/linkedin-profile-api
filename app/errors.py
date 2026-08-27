@@ -125,6 +125,18 @@ class UpstreamError(ApiError):
     retryable = True
 
 
+class EndpointRetired(UpstreamError):
+    """LinkedIn answered 410 Gone: this endpoint no longer exists.
+
+    Distinct from UpstreamError because it is not a failed *attempt* -- the
+    strategy never ran. Treating it as one let a retired endpoint outvote a real
+    verdict from a working one, turning "no such profile" into a 502.
+    """
+
+    code = "ENDPOINT_RETIRED"
+    message = "LinkedIn has retired this endpoint."
+
+
 class ParseFailed(ApiError):
     code = "PARSE_FAILED"
     status_code = 502
