@@ -10,8 +10,16 @@ uses — authenticated with a real member session cookie.
 GET /v1/profile?url=https://www.linkedin.com/in/some-person
 ```
 
-- **Live API:** `https://<your-deployment>.onrender.com`
-- **Interactive docs:** `https://<your-deployment>.onrender.com/docs`
+**Live:** <https://linkedin-profile-api-joul.onrender.com> · **Docs:**
+<https://linkedin-profile-api-joul.onrender.com/docs>
+
+```bash
+curl "https://linkedin-profile-api-joul.onrender.com/v1/profile?url=https://www.linkedin.com/in/harshet-jain" | jq
+```
+
+The free tier sleeps after 15 minutes idle, so a first request may take ~30s to
+wake the container. A fully-populated profile takes ~15s live (one request for
+the profile, two more to page in a 45-entry skills section) and ~7ms from cache.
 
 > **Pure HTTP, no browser.** Every LinkedIn request is a direct `httpx` call. No
 > Playwright, Selenium or headless Chrome anywhere — five pip packages total, no
@@ -24,7 +32,7 @@ GET /v1/profile?url=https://www.linkedin.com/in/some-person
 Python 3.11+.
 
 ```bash
-git clone https://github.com/<you>/linkedin-profile-api.git
+git clone https://github.com/RiteshTiwari1/linkedin-profile-api.git
 cd linkedin-profile-api
 make install
 cp .env.example .env      # add your cookie, see below
