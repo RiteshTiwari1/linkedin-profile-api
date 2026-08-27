@@ -4,7 +4,14 @@ from __future__ import annotations
 
 from functools import lru_cache
 
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+# Hard ceilings on how long other people's profile data may be held. Deliberately
+# not configurable upward: a value left behind in a hosting dashboard must not be
+# able to extend retention past what the service promises.
+MAX_CACHE_TTL_SECONDS = 3_600        # 1 hour served as fresh
+MAX_CACHE_RETENTION_SECONDS = 86_400  # 24 hours, then deleted
 
 # A real, current desktop Chrome UA. LinkedIn rejects obviously-scripted agents.
 DEFAULT_USER_AGENT = (
@@ -74,6 +81,23 @@ class Settings(BaseSettings):
     request_timeout: float = 25.0
     log_level: str = "INFO"
     user_agent: str = DEFAULT_USER_AGENT
+
+    @field_validator("cache_ttl_seconds")
+    @classmethod
+    def _cap_ttl(cls, value: int) -> int:
+        return min(value, MAX_CACHE_TTL_SECONDS)
+
+    @field_validator("cache_stale_max_seconds")
+    @classmethod
+    def _cap_retention(cls, value: int) -> int:
+        """Clamp retention rather than trusting the environment.
+
+        This cache holds the personal data of everyone looked up through the
+        service, so how long that is kept is a privacy decision, not a tuning
+        knob -- and a stale value left in a hosting dashboard should not be able
+        to quietly extend it to a month. Configurable downward, capped upward.
+        """
+        return min(value, MAX_CACHE_RETENTION_SECONDS)
 
     # --- Derived -----------------------------------------------------------
     @property

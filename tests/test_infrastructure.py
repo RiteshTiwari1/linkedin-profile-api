@@ -264,3 +264,29 @@ def test_purge_all_forgets_everything():
         cache.set(name, {"n": 1}, "dash")
     assert cache.purge_all() == 3
     assert cache.list_identifiers() == []
+
+
+def test_retention_is_capped_in_code_not_trusted_from_the_environment():
+    """How long other people's data is kept is a privacy decision.
+
+    The deployed instance was found holding profiles for 30 days because Render
+    captured CACHE_STALE_MAX_SECONDS when the blueprint was first created, before
+    the shorter default landed. A stale dashboard value must not be able to
+    quietly extend retention past what the service documents.
+    """
+    from app.config import MAX_CACHE_RETENTION_SECONDS, MAX_CACHE_TTL_SECONDS, Settings
+
+    over = Settings(
+        _env_file=None, cache_ttl_seconds=86_400, cache_stale_max_seconds=2_592_000
+    )
+    assert over.cache_ttl_seconds == MAX_CACHE_TTL_SECONDS
+    assert over.cache_stale_max_seconds == MAX_CACHE_RETENTION_SECONDS
+
+
+def test_retention_remains_configurable_downward():
+    """A tighter window is always allowed -- the cap is a ceiling, not a target."""
+    from app.config import Settings
+
+    tight = Settings(_env_file=None, cache_ttl_seconds=60, cache_stale_max_seconds=300)
+    assert tight.cache_ttl_seconds == 60
+    assert tight.cache_stale_max_seconds == 300

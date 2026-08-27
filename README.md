@@ -377,7 +377,7 @@ The parser needed dozens of iterations; against live LinkedIn that is hundreds o
 profile views and a blocked account. So `scripts/record_fixture.py` captures the
 **raw** payload once and everything after is offline. Recorded fixtures hold real
 personal data and are gitignored; the committed `synthetic_priya-raghavan.json`
-is hand-built fake data mirroring the real shape, so the 149 tests and demo mode
+is hand-built fake data mirroring the real shape, so the 151 tests and demo mode
 work for anyone cloning the repo with no credentials.
 
 ### Protecting the account
@@ -462,7 +462,11 @@ limiters sharing one account, quietly doubling the request rate LinkedIn sees.
 
 **Caching is off by default** — a fresh install stores nothing. Enabled, it holds
 the parsed profile of everyone looked up in one gitignored SQLite file, for 1 hour
-fresh / 24 hours fallback, then **deleted** rather than merely ignored.
+fresh / 24 hours fallback, then **deleted** rather than merely ignored. Those
+windows are **capped in code**, configurable downward but not upward: the
+deployed instance was found holding profiles for 30 days because the hosting
+dashboard had captured an older value, and a stale env var should not be able to
+quietly extend retention past what this document promises.
 `DELETE /v1/cache` forgets everything. It exists because repeat requests would
 otherwise spend the scarce daily budget, and because a cached copy is the only
 thing standing between a killed session and a 502.
@@ -485,7 +489,7 @@ regimes need a lawful basis, and "it was on the internet" isn't one.
 ## Tests
 
 ```bash
-make test     # 149 tests, ~3s, no network and no credentials required
+make test     # 151 tests, ~3s, no network and no credentials required
 make lint
 ```
 
